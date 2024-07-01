@@ -17,7 +17,7 @@ function validate(){
         body: JSON.stringify(data),
     }).then(response => {
         if(!response.ok){
-            return response.json();
+            console.log(response);
         }
         return response.json();
     }).then(data => {
@@ -25,6 +25,30 @@ function validate(){
         .then(response => response.text())
         .then(outpage => {
             document.documentElement.innerHTML = outpage;
+            sessionStorage.setItem('token', data.token);
+            loadScriptinPage(outpage);
         });
     })
+}
+
+function loadScriptinPage(content, callback) {
+    var temp = document.createElement('div');
+    temp.innerHTML = content;
+    var scripts = temp.querySelectorAll('script[src]');
+    scripts.forEach(scriptElement => {
+        var src = scriptElement.getAttribute('src');
+        var existingScripts = temp.querySelectorAll(`script[src="${src}"]`);
+        existingScripts.forEach(script => {
+            script.parentNode.removeChild(script);
+            console.log(`Script removed: ${src}`);
+        });
+
+        var newScript = document.createElement('script');
+        newScript.src = src;
+        newScript.onload = () => {
+            console.log(`Script loaded: ${newScript.src}`);
+            if (callback) callback();
+        };
+        document.getElementById('script-record').appendChild(newScript);
+    });
 }

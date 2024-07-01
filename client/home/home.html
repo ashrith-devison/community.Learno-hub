@@ -1,8 +1,3 @@
-<!-- 
-    * Author Ashrith Sai
-    * created on 30/06/2024
-    * Last modified on 01/07/2023 
- -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,29 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="/client/home/home.css">
-    <script src="/env.js"></script>
 </head>
 <body>
+    <div id="script-record"></div>
     <div class="home-page">
         <header>
             <li><a href="#academics">Academics</a></li>
             <li><a href="#marks">Marks</a></li>
             <li>Curriculum</li>
             <li>Grades</li>
-            <li>My Profile</li>
+            <li><a onclick="profile_init();">My Profile</a></li>
         </header>
         <div class="content">
-            <section id="academics">
+            <section id="content">
                 
             </section>
-            <section id="marks">
-                
-            </section>
-
         </div>
     </div>
+    <script src="/client/home/home.js"></script>
 </body>
-<script>
-    console.log(envData);
-</script>
 </html>
