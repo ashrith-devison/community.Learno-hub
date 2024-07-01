@@ -8,7 +8,7 @@ function loadScript(url, callback) {
     document.getElementById('script-record').appendChild(newScript);
 }
 function profile_init(){
-    loadScript('/client/home/profile.js',()=>{
+    loadScript('/client/home/profile/profile.js',()=>{
         fetch_profile();
     });
 }

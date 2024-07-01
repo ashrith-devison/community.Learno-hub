@@ -48,6 +48,7 @@ app.post('/login', async(req, res) => {
                         icon : 'success',
                         redirectLink : '/client/home/home.html'
                     }
+                    console.log(output);
                     return res.send(output);
                 }
 
