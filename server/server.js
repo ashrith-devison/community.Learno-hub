@@ -114,6 +114,7 @@ app.post('/register', async(req, res)=> {
 
 
 app.use('/student', require('./routes/student.profile.route'));
+app.use('/curriculum', require('./routes/student.curriculum.route'));
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });

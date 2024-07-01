@@ -12,3 +12,9 @@ function profile_init(){
         fetch_profile();
     });
 }
+
+function curriculum_init(){
+    loadScript('/client/home/curriculum/curriculum.js',()=>{
+        fetch_curriculum();
+    });
+}

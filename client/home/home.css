@@ -26,7 +26,9 @@ header {
 }
 
 .content {
-    margin-left: 12%;
+    width: 90vw;
+    height: 100vh;
+    padding-left: 15% ;
 }
 
 section{

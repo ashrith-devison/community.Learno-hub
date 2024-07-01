@@ -37,11 +37,6 @@ function loadScriptinPage(content, callback) {
     var scripts = temp.querySelectorAll('script[src]');
     scripts.forEach(scriptElement => {
         var src = scriptElement.getAttribute('src');
-        var existingScripts = temp.querySelectorAll(`script[src="${src}"]`);
-        existingScripts.forEach(script => {
-            script.parentNode.removeChild(script);
-            console.log(`Script removed: ${src}`);
-        });
 
         var newScript = document.createElement('script');
         newScript.src = src;
