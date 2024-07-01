@@ -49,7 +49,7 @@ app.post('/login', async(req, res) => {
                     registerid : data.registerid,
                     username : data.username,
                     icon : 'success',
-                    redirectLink : '/admin/content'
+                    redirectLink : '/client/home/home.html'
                 }
                 return res.send(output);
             }

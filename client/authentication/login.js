@@ -1,3 +1,8 @@
+/*
+    * Author Ashrith Sai
+    * created on 30/06/2024
+    * Last modified on 01/07/2023 
+*/
 function validate(){
     const data = {
         username : $('#username').val(),
@@ -16,6 +21,10 @@ function validate(){
         }
         return response.json();
     }).then(data => {
-        document.documentElement.innerHTML = "<p>" + data.message + "</p>";
+        fetch(data.redirectLink)
+        .then(response => response.text())
+        .then(outpage => {
+            document.documentElement.innerHTML = outpage;
+        });
     })
 }
