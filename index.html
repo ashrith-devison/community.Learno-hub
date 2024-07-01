@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LMS</title>
+    <link rel="stylesheet" href="login.css">
+    <script src="/client/authentication/login.js"></script>
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+</head>
+<body>
+    <h2>Arya University</h2>
+    <div class="container">
+        <div class="spotlight">
+            <h2>Spotlight</h2>
+            <ul>
+                <li>Admission Open</li>
+                <li>Online Classes</li>
+                <li>Examination</li>
+                <li>Result</li>
+            </ul>
+        </div>
+
+        <form class="login" onsubmit="validate();return false;" autocomplete="off">
+            <h2>Community Login</h2>
+            <input type="text" id="username" placeholder="Username">
+            <input type="password" id="password" placeholder="Password">
+            <button type="submit">Login</button>
+        </form>
+    </div>
+    <footer>
+        <p>&copy; 2020 Arya University</p>
+    </footer>
+    <script src="./env.js"></script>
+</body>
+</html>

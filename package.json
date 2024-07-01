@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "bootstrap": "^5.3.3",
+    "cors": "^2.8.5",
+    "jquery": "^3.7.1",
+    "sweetalert2": "^11.12.1"
+  }
+}
