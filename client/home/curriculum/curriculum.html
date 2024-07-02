@@ -1,0 +1,69 @@
+<div id="curriculum-container">
+    <select id="semester-code" onchange="fetch_curriculum();">
+        <option value="" selected>Select Semester</option>
+        <option value="FALL-2023-34">FALL SEM</option>
+        <option value="WIN-2023-24">WIN SEM</option>
+    </select>
+<h1><span id="semester"></span></h1>
+<table id="curriculumTable">
+    <thead>
+        <tr>
+            <th>Course Code</th>
+            <th>Course Name</th>
+            <th>Credit Hours</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<h3>Registered Credits : <span id="registered-credits"></span></h3>
+</div>
+<style>
+
+    select {
+        width : 40%;
+        padding : 1%;
+        margin-top : 3%;
+    }
+    #curriculum-container {
+        display : flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        border: 2px solid black;
+        margin-right: 10%;
+        height: 80vh;
+    }
+
+    h1 {
+        text-align: center;
+        padding-top : 2%;
+    }
+
+    h3{
+        text-align: center;
+        padding : 2%;
+    }
+
+    table {
+        width: 90%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        border: black 2px solid;
+    }
+
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #bab9b9;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tr:hover {
+        background-color: #fcf3f3;
+    }
+
+</style>

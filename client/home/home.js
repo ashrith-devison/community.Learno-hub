@@ -15,6 +15,6 @@ function profile_init(){
 
 function curriculum_init(){
     loadScript('/client/home/curriculum/curriculum.js',()=>{
-        fetch_curriculum();
+        load_curriculum();
     });
 }
