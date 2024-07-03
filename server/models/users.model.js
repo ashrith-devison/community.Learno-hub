@@ -1,4 +1,3 @@
-const { unique } = require('jquery');
 const mongoose = require('mongoose');
 
 const LoginHistory = new mongoose.Schema({

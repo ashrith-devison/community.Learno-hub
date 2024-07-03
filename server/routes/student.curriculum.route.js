@@ -10,16 +10,16 @@ router.post('/query', async(req, res)=>{
 
 router.post('/add/course', async(req, res)=>{
     const course = require('../models/curriculum.model');
-
-    const courseExists = await course.findOne({CourseCode : req.body.CourseCode});
+    const {category, CourseCode, CourseName, CreditHours} = req.body;
+    const courseExists = await course.findOne({CourseCode : CourseCode});
     if(courseExists){
         return res.send("Course Already Exists");
     }
     const newCourse = new course({
-        category : req.body.category,
-        CourseCode : req.body.CourseCode,
-        CourseName : req.body.CourseName,
-        CreditHours : req.body.CreditHours,
+        category : category,
+        CourseCode : CourseCode,
+        CourseName : CourseName,
+        CreditHours : CreditHours,
         offered : [{
             Semester : "INIT",
             Year :  0,

@@ -39,9 +39,11 @@ router.post('/add', async(req, res)=>{
 
 router.post('/addcourse', async(req, res)=>{
     const StudentRegistration = require('../models/student.registration.model');
+    const curriculum = require('../models/curriculum.model');
     const {username, CourseCode, CourseName, CreditHours, semester} = req.body;
     const student = await StudentRegistration.findOne({username : username});
-    if(student){
+    const courseExist = await curriculum.findOne({CourseCode: CourseCode});
+    if(student && courseExist){
         const courseExist = student.courses.findIndex(course => course.coursecode === CourseCode);
         if(courseExist !== -1){
             return res.send({
@@ -63,6 +65,13 @@ router.post('/addcourse', async(req, res)=>{
             });
             res.send('Course added');
         }   
+    }
+    else{
+        res.send({
+            error : 1,
+            message : 'Course not found in your curriculum',
+            icon : 'error'
+        });
     }
 });
 
