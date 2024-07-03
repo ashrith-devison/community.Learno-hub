@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
+const {asyncHandler} = require("../utils/asyncHandler");
 
-router.post('/profile', async(req, res)=>{
+router.post('/profile', asyncHandler(async(req, res)=>{
     const {token} = req.body;
     const username = jwt.verify(token,"MasterKey", (err, user) => {
         if(err){
@@ -13,7 +14,6 @@ router.post('/profile', async(req, res)=>{
             return user.username;
         }
     });
-    try{
         const User = require('../models/users.profile.model');
         const Profile = require('../models/users.model');
         const userlog = await User.findOne({username : username});
@@ -38,16 +38,11 @@ router.post('/profile', async(req, res)=>{
         else{
             return res.send('User not found');
         }
-    }
-    catch(err){
-        console.log(err);
-    }
-});
+}));
 
-router.post('/register', async(req, res) => {
+router.post('/register', asyncHandler(async(req, res) => {
     const {username,name, email, phoneno, fathername, fcontact, mothername, mcontact, address} = req.body;
-    
-    try{
+
         const UserDetails = require('../models/users.profile.model');
         const user = await UserDetails.findOne({username : username});
         if(user){
@@ -77,15 +72,12 @@ router.post('/register', async(req, res) => {
                 icon : 'success'
             });
         }
-    }
-    catch(err){
-        res.send(err);
-    }
-});
 
-router.post('/setlogin', async(req, res) => {
+}));
+
+router.post('/setlogin', asyncHandler(async(req, res) => {
     const {username, password, role, registerid} = req.body;
-    try{
+   
         const User = require('../models/users.model');
         const user = await User.findOne({username: username});
         if(user){
@@ -112,10 +104,6 @@ router.post('/setlogin', async(req, res) => {
                 icon : 'success'
             });
         }
-    }
-    catch(err){
-        res.send(err);
-    }
-});
+}));
 
 module.exports = router;

@@ -2,14 +2,16 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const middleware = require('../middlewares/student.registration.middleware');
-router.post('/data', async(req, res)=>{
+const {asyncHandler} = require('../utils/asyncHandler');
+
+router.post('/data', asyncHandler(async(req, res)=>{
     const {registerid} = req.body;
     const StudentRegistration = require('../models/student.registration.model');
     const student = await StudentRegistration.findOne({registerNo : registerid});
     res.send(student);
-});
+}));
 
-router.post('/add', async(req, res)=>{
+router.post('/add', asyncHandler(async(req, res)=>{
     const StudentRegistration = require('../models/student.registration.model');
     const {username, semester } = req.body;
     if(!username || !semester){
@@ -35,9 +37,9 @@ router.post('/add', async(req, res)=>{
         console.log('Student registered');
     });
     res.send('Student registered');
-});
+}));
 
-router.post('/addcourse', async(req, res)=>{
+router.post('/addcourse', asyncHandler(async(req, res)=>{
     const StudentRegistration = require('../models/student.registration.model');
     const curriculum = require('../models/curriculum.model');
     const {username, CourseCode, CourseName, CreditHours, semester} = req.body;
@@ -73,9 +75,9 @@ router.post('/addcourse', async(req, res)=>{
             icon : 'error'
         });
     }
-});
+}));
 
-router.post('/viewcourses', middleware, async(req, res)=>{
+router.post('/viewcourses', middleware, asyncHandler(async(req, res)=>{
     const StudentRegistration = require('../models/student.registration.model');
     const {username, semester} = req.body;
     const student = await StudentRegistration.findOne({username : username});
@@ -100,6 +102,6 @@ router.post('/viewcourses', middleware, async(req, res)=>{
             icon : 'error'
         });
     }
-});
+}));
 
 module.exports = router;

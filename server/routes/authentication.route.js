@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
+const {asyncHandler} = require('../utils/asyncHandler');
 
-router.post('/login', async(req, res) => {
+router.post('/login', asyncHandler(async(req, res) => {
     const {username, password} = req.body;
-    try{
         const User = require('../models/users.model');
         
         let log = await User.findOne({username : username});
@@ -67,15 +67,10 @@ router.post('/login', async(req, res) => {
         else{
             return res.send('User not found');
         }
-    }
-    catch(err){
-        console.log(err);
-    }
-});
+}));
 
-router.post('/register', async(req, res)=> {
+router.post('/register', asyncHandler(async(req, res)=> {
     const {username, password, role, registerid} = req.body;
-    try{
         const User = require('../models/users.model');
         const newUser = new User({
             username: username,
@@ -91,10 +86,6 @@ router.post('/register', async(req, res)=> {
         newUser.save().then(()=>{
             return res.send('User created');
         });
-    }
-    catch(err){
-        console.log(err);
-    }
-});
+}));
 
 module.exports = router;
