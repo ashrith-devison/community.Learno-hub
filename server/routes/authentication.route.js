@@ -65,7 +65,7 @@ router.post('/login', asyncHandler(async(req, res) => {
             });
         }
         else{
-            return res.send('User not found');
+            throw new ApiError.unauthorized('User not found');
         }
 }));
 

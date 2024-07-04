@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const jwt = require('jsonwebtoken');
 const middleware = require('../middlewares/student.registration.middleware');
 const {asyncHandler} = require('../utils/asyncHandler');
+const ApiError = require('../utils/ApiError');
 
 router.post('/data', asyncHandler(async(req, res)=>{
     const {registerid} = req.body;
@@ -15,12 +15,12 @@ router.post('/add', asyncHandler(async(req, res)=>{
     const StudentRegistration = require('../models/student.registration.model');
     const {username, semester } = req.body;
     if(!username || !semester){
-        return res.send('Please enter all fields');
+        throw new ApiError.badRequest('Please fill all the fields');
     }
     console.log(username);
     const student = await StudentRegistration.findOne({username : username});
     if(student){
-        return res.send('Student already exists');
+        throw new ApiError.badRequest('Student already registered');
     }
     const newStudent = new StudentRegistration({
         username : username,
@@ -48,11 +48,7 @@ router.post('/addcourse', asyncHandler(async(req, res)=>{
     if(student && courseExist){
         const courseExist = student.courses.findIndex(course => course.coursecode === CourseCode);
         if(courseExist !== -1){
-            return res.send({
-                error : 1,
-                course : 'Course already registered in ' + student.courses[courseExist].semester + ' semester',
-                icon : 'error'
-            });
+            throw ApiError.badRequest('Course already added');
         }
         else{
             student.courses.push({
@@ -69,11 +65,7 @@ router.post('/addcourse', asyncHandler(async(req, res)=>{
         }   
     }
     else{
-        res.send({
-            error : 1,
-            message : 'Course not found in your curriculum',
-            icon : 'error'
-        });
+        throw ApiError.notFound('Course not found in your curriculum');
     }
 }));
 
@@ -87,20 +79,27 @@ router.post('/viewcourses', middleware, asyncHandler(async(req, res)=>{
             res.send(courses);
         }
        else{
-            res.send({
-                    error : 1,
-                    message : 'No courses found in '+ semester + ' semester',
-                    icon : 'error',
-                    semester : semester
-                });
+            throw ApiError.notFound('No courses found in '+ semester + ' semester');
        }
     }
     else{
+        throw ApiError.notFound('Student not found, Please Check your username');
+    }
+}));
+
+router.post('/courseHistory', asyncHandler(async (req, res) => {
+    const StudentRegistration = require('../models/student.registration.model');
+    const {username} = req.body;
+    const student = await StudentRegistration.findOne({username : username});
+    if(student){
         res.send({
-            error : 1,
-            message : 'Student not found',
-            icon : 'error'
+            courses : student.courses,
+            creditsCompleted : student.creditsCompleted,
+            creditsRegistered : student.creditsRegistered
         });
+    }
+    else{
+        throw ApiError.notFound('Student not found, Please Check your username');
     }
 }));
 

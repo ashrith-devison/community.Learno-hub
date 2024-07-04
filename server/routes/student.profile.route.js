@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const {asyncHandler} = require("../utils/asyncHandler");
+const ApiError = require('../utils/ApiError');
 
 router.post('/profile', asyncHandler(async(req, res)=>{
     const {token} = req.body;
@@ -36,7 +37,7 @@ router.post('/profile', asyncHandler(async(req, res)=>{
             return res.send(data);
         }
         else{
-            return res.send('User not found');
+            throw new ApiError.badRequest('User not found');
         }
 }));
 
@@ -46,11 +47,7 @@ router.post('/register', asyncHandler(async(req, res) => {
         const UserDetails = require('../models/users.profile.model');
         const user = await UserDetails.findOne({username : username});
         if(user){
-            return res.send({
-                message : 'Username already Exits',
-                error : 1,
-                icon : 'error'
-            });
+            throw new ApiError.badRequest('User already registered');
         }
         else if(!user){
             const newUser = new UserDetails({

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {asyncHandler} = require('../utils/asyncHandler');
-
+const ApiError = require('../utils/ApiError');
 router.post('/query', asyncHandler(async(req, res)=>{
     const {category} = req.body;
     const courses = require('../models/curriculum.model');
@@ -14,7 +14,7 @@ router.post('/add/course', asyncHandler(async(req, res)=>{
     const {category, CourseCode, CourseName, CreditHours} = req.body;
     const courseExists = await course.findOne({CourseCode : CourseCode});
     if(courseExists){
-        return res.send("Course Already Exists");
+        throw ApiError.badRequest('Course already exists');
     }
     const newCourse = new course({
         category : category,
