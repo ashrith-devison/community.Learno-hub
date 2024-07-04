@@ -3,24 +3,16 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const {asyncHandler} = require("../utils/asyncHandler");
 const ApiError = require('../utils/ApiError');
+const ApiResponse = require('../utils/ApiResponse');
+const middleware = require('../middlewares/student.profile.middleware');
 
-router.post('/profile', asyncHandler(async(req, res)=>{
-    const {token} = req.body;
-    const username = jwt.verify(token,"MasterKey", (err, user) => {
-        if(err){
-            return res.send({message : err});
-        }
-        else{
-            console.log(user);
-            return user.username;
-        }
-    });
+router.post('/profile', middleware, asyncHandler(async(req, res)=>{
+        const {username} = req.body;
         const User = require('../models/users.profile.model');
         const Profile = require('../models/users.model');
         const userlog = await User.findOne({username : username});
         const profile = await Profile.findOne({username : username});
         if(userlog){
-
             const data = {
                 username : userlog.username,
                 Name : userlog.Name,
@@ -34,10 +26,10 @@ router.post('/profile', asyncHandler(async(req, res)=>{
                 role : profile.role,
                 registerid : profile.registerid
             }
-            return res.send(data);
+            return ApiResponse.send(res, 200, data, 'User Profile');
         }
         else{
-            throw new ApiError.badRequest('User not found');
+            throw ApiError.badRequest('User not found');
         }
 }));
 
@@ -47,7 +39,7 @@ router.post('/register', asyncHandler(async(req, res) => {
         const UserDetails = require('../models/users.profile.model');
         const user = await UserDetails.findOne({username : username});
         if(user){
-            throw new ApiError.badRequest('User already registered');
+            throw ApiError.badRequest('User already registered');
         }
         else if(!user){
             const newUser = new UserDetails({
@@ -63,11 +55,13 @@ router.post('/register', asyncHandler(async(req, res) => {
             });
             newUser.save();
 
-            return res.send({
+            const output = {
                 message : 'User Registered Successfully',
                 error : 0,
                 icon : 'success'
-            });
+            };
+
+            return ApiResponse.send(res, 200, output, 'User registered');
         }
 
 }));
@@ -81,11 +75,12 @@ router.post('/setlogin', asyncHandler(async(req, res) => {
             await User.findOneAndUpdate({username : username},
                  {password : password, role : role, registerid : registerid},
                  {new : true});
-            return res.send({
+            const output = {
                 message : 'Updated Successfully',
                 error : 0,
                 icon : 'info'
-            });
+            };
+            return ApiResponse.send(res, 200, output, 'User updated');
         }
         else if(!user){
             const newUser = new User({
@@ -95,11 +90,12 @@ router.post('/setlogin', asyncHandler(async(req, res) => {
                 registerid : registerid
             });
             newUser.save();
-            return res.send({
+            output = {
                 message : 'User Registered Successfully',
                 error : 0,
                 icon : 'success'
-            });
+            };
+            return ApiResponse.send(res, 200, output, 'User registered');
         }
 }));
 

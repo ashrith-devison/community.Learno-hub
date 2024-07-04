@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const {asyncHandler} = require('../utils/asyncHandler');
 const ApiError = require('../utils/ApiError');
+const ApiResponse = require('../utils/ApiResponse');
+
 router.post('/query', asyncHandler(async(req, res)=>{
     const {category} = req.body;
     const courses = require('../models/curriculum.model');
@@ -30,7 +32,7 @@ router.post('/add/course', asyncHandler(async(req, res)=>{
     await newCourse.save().then(()=>{
         console.log("Course Added");
     });
-    res.send("Course Added");
+    res.send(new ApiResponse(200, {} , 'Course Added'));
 }));
 
 module.exports = router;

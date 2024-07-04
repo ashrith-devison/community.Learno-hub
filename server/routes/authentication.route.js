@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const {asyncHandler} = require('../utils/asyncHandler');
+const ApiResponse = require('../utils/ApiResponse');
+const ApiError = require('../utils/ApiError');
 
 router.post('/login', asyncHandler(async(req, res) => {
     const {username, password} = req.body;
@@ -34,7 +36,7 @@ router.post('/login', asyncHandler(async(req, res) => {
                         icon : 'success',
                         redirectLink : '/client/home/home.html'
                     }
-                    return res.send(output);
+                    return ApiResponse.send(res, 200, output, 'Admin logged in');
                 }
 
                 else if(data.role === 'professor'){
@@ -47,7 +49,7 @@ router.post('/login', asyncHandler(async(req, res) => {
                         icon : 'success',
                         redirectLink : '/professor/content'
                     }
-                    return res.send(output);
+                    return ApiResponse.send(res, 200, output, 'Professor logged in');
                 }
 
                 else if(data.role === 'student'){
@@ -60,12 +62,12 @@ router.post('/login', asyncHandler(async(req, res) => {
                         icon : 'success',
                         redirectLink : '/student/content'
                     }
-                    return res.send(output);
+                    return ApiResponse.send(res, 200, output, 'Student logged in');
                 }
             });
         }
         else{
-            throw new ApiError.unauthorized('User not found');
+            throw ApiError.unauthorized('User not found');
         }
 }));
 
@@ -84,7 +86,7 @@ router.post('/register', asyncHandler(async(req, res)=> {
             ]
         });
         newUser.save().then(()=>{
-            return res.send('User created');
+            return ApiResponse.send(res, 200, null, 'User registered');
         });
 }));
 

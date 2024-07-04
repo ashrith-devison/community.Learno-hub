@@ -3,6 +3,7 @@ const router = express.Router();
 const middleware = require('../middlewares/student.registration.middleware');
 const {asyncHandler} = require('../utils/asyncHandler');
 const ApiError = require('../utils/ApiError');
+const ApiResponse = require('../utils/ApiResponse');
 
 router.post('/data', asyncHandler(async(req, res)=>{
     const {registerid} = req.body;
@@ -15,12 +16,11 @@ router.post('/add', asyncHandler(async(req, res)=>{
     const StudentRegistration = require('../models/student.registration.model');
     const {username, semester } = req.body;
     if(!username || !semester){
-        throw new ApiError.badRequest('Please fill all the fields');
+        throw ApiError.badRequest('Please fill all the fields');
     }
-    console.log(username);
     const student = await StudentRegistration.findOne({username : username});
     if(student){
-        throw new ApiError.badRequest('Student already registered');
+        throw ApiError.badRequest('Student already registered');
     }
     const newStudent = new StudentRegistration({
         username : username,
@@ -36,7 +36,7 @@ router.post('/add', asyncHandler(async(req, res)=>{
     await newStudent.save().then(()=>{
         console.log('Student registered');
     });
-    res.send('Student registered');
+    return ApiResponse.send(res, 200, null, 'Student registered');
 }));
 
 router.post('/addcourse', asyncHandler(async(req, res)=>{
@@ -61,7 +61,7 @@ router.post('/addcourse', asyncHandler(async(req, res)=>{
             await student.save().then(()=>{
                 console.log('Course added');
             });
-            res.send('Course added');
+            return ApiResponse.send(res, 200, null, 'Course added');
         }   
     }
     else{
@@ -76,7 +76,7 @@ router.post('/viewcourses', middleware, asyncHandler(async(req, res)=>{
     if(student){
         const courses = student.courses.filter(course => course.semester === semester);
         if(courses.length > 0){
-            res.send(courses);
+            return ApiResponse.send(res, 200, courses, 'Courses found');
         }
        else{
             throw ApiError.notFound('No courses found in '+ semester + ' semester');
@@ -92,11 +92,12 @@ router.post('/courseHistory', asyncHandler(async (req, res) => {
     const {username} = req.body;
     const student = await StudentRegistration.findOne({username : username});
     if(student){
-        res.send({
+        const output = {
             courses : student.courses,
             creditsCompleted : student.creditsCompleted,
             creditsRegistered : student.creditsRegistered
-        });
+        };
+        return ApiResponse.send(res, 200, output, 'Course History');
     }
     else{
         throw ApiError.notFound('Student not found, Please Check your username');
