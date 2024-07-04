@@ -10,7 +10,7 @@ const resource = new mongoose.Schema({
         type : String,
         required : true
     }
-});
+},{_id : false});
 const CourseWork = new mongoose.Schema({
     dateofupload : {
         type : Date,
@@ -25,7 +25,7 @@ const CourseWork = new mongoose.Schema({
         required : true
     },
     resources : [resource]
-});
+},{_id : false});
 const CourseProfile = new mongoose.Schema({
     professor : {
         type : String,
@@ -36,7 +36,7 @@ const CourseProfile = new mongoose.Schema({
         required : true
     },
     material : [CourseWork]
-});
+},{_id : false});
 const CourseProfileSchema = new mongoose.Schema({
     coursecode : {
         type: String,

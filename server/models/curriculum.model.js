@@ -5,10 +5,6 @@ const offeredLog = new mongoose.Schema({
         type : String,
         required : true
     },
-    Year : {
-        type : Number,
-        required : true
-    },
     professor : [ {
         type : String,
         required : true
