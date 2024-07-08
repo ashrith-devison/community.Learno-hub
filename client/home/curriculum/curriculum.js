@@ -26,8 +26,7 @@ function fetch_curriculum(){
             cell.style.textAlign = 'center';
             cell.textContent = data.message;
             $('#registered-credits').html(0);
-            $('#semester').html(data.semester);
-            $('#semester-code').val(data.semester);
+            $('#semester').html($('#semester-code').val());
             return;
         }
         load_curriculum(data);

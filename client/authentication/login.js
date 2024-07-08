@@ -27,6 +27,7 @@ function validate(){
             document.documentElement.innerHTML = outpage;
             sessionStorage.setItem('token', data.token);
             loadScriptinPage(outpage);
+            history.replaceState({}, null, "/client/home/home.html");
         });
     })
 }
